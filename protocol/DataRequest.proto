@@ -1,0 +1,14 @@
+syntax = "proto3";
+
+option go_package="grpc";
+//检测数据
+message DataRequest {
+  //设备编号
+  string number = 1;
+  //环境项目
+  string variable = 2;
+  //环境项目值
+  string value = 3;
+  //数据发生时间
+  int64  date = 4;
+}

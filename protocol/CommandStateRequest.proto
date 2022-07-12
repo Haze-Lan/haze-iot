@@ -1,0 +1,14 @@
+syntax = "proto3";
+
+option go_package="grpc";
+//指令执行结果上报
+message CommandRequest{
+  //设备编号
+  string number = 1;
+  //指令Key
+  string commandKey = 2;
+  //是否成功
+  bool isSuccess = 3;
+  //执行结果描述
+  string message = 4;
+}
