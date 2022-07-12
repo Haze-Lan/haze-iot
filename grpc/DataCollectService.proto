@@ -1,26 +1,94 @@
 syntax = "proto3";
-
-option go_package="grpc";
-
-import "/haze-iot/protocol/AttributesRequest.proto";
-import "/haze-iot/protocol/CommandStateRequest.proto";
-import "/haze-iot/protocol/DataRequest.proto";
-import "/haze-iot/protocol/MetricsRequest.proto";
-import "/haze-iot/protocol/StateRequest.proto";
-
+package grpc;
+option go_package="haze-iot/grpc";
 service DataCollectService {
   // 数据收集接口
   rpc collectData (DataRequest) returns (ReportReply) {}
   // 状态收集接口
   rpc collectState (StateRequest) returns (ReportReply) {}
   // 指令结果收集接口
-  rpc collectCommand (CommandRequest) returns (ReportReply) {}
+  rpc collectCommand (CommandStateRequest) returns (ReportReply) {}
   // 属性收集接口
   rpc collectAttributes(AttributesRequest) returns (ReportReply) {}
   // 属性收集接口
   rpc collectMetrics(MetricsRequest) returns (ReportReply) {}
   //监听指令
   rpc commandDistribution(stream CommandLis) returns (stream CommandReply){}
+}
+//指令执行结果上报
+message AttributesRequest{
+  //设备编号
+  string number = 1;
+  //属性键名
+  string attributes = 2;
+  //旧值
+  string oldValue = 3;
+  //新值
+  string newValue = 4;
+  //数据发生时间
+  int64 date = 5;
+  //中文 名称
+  string name = 6;
+}
+
+//指令执行结果上报
+message CommandStateRequest{
+  //设备编号
+  string number = 1;
+  //指令Key
+  string commandKey = 2;
+  //是否成功
+  bool isSuccess = 3;
+  //执行结果描述
+  string message = 4;
+}
+
+//检测数据
+message DataRequest {
+  //设备编号
+  string number = 1;
+  //环境项目
+  string variable = 2;
+  //环境项目值
+  string value = 3;
+  //数据发生时间
+  int64  date = 4;
+}
+
+//监测参数上报
+message MetricsRequest{
+  /**
+   * 名称
+   */
+  string name = 1;
+  /**
+   * 唯一标识
+   */
+  string key = 2;
+  /**
+   * 值
+   */
+  double value = 3;
+  /**
+   * 描述
+   */
+  string description = 4;
+  /**
+   * 单位
+   */
+  string unit = 5;
+}
+
+//设备连接状态
+message StateRequest{
+  //设备编号
+  string number = 1;
+  //设备状态
+  string state = 2;
+  //携带的消息
+  string message = 3;
+  //时间发生时间
+  int64 date = 4;
 }
 
 message CommandLis{
